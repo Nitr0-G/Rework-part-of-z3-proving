@@ -331,16 +331,6 @@ namespace Z3SystemTranslateFuncs {
 			throw std::exception("bad operand type in get_val_expr function");
 	}
 
-	static inline bool calculate_parity(uint8_t value) {
-		bool parity = false;
-		for (int i = 0; i < 8; i++) {
-			if (value & (1 << i)) {
-				parity = !parity;
-			}
-		}
-		return parity;
-	}
-
 	static inline bool calculate_parity__(uint64_t num)
 	{
 		uint64_t count = 0;
