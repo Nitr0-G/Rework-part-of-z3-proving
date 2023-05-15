@@ -5,5 +5,5 @@ More examples and information will be provided a little later
 
 The project is currently under development
 
-# How to compile
+# How to gen .sln file
 cmake ..
