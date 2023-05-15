@@ -6,9 +6,4 @@ More examples and information will be provided a little later
 The project is currently under development
 
 # How to compile
-
 cmake ..
-
-Add z3 to the .sln.
-
-Rename the include pair in *.cpp 
