@@ -1,6 +1,6 @@
-#include "PeLoaderEmu/PeLoaderEmu.hpp"
+#include "PeLoaderEmu.hpp"
 #include "Emu.hpp"
-#include "Hooks/HooksFromEmu.hpp"
+#include "HooksFromEmu.hpp"
 
 #include <Zydis/Zydis.h>
 #include <unicorn/unicorn.h>

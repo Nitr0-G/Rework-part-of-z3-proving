@@ -1,5 +1,5 @@
-#include "z3states.hpp"
-#include "z3ASMx64Instructions.hpp"
+#include "z3/z3states.hpp"
+#include "z3/z3ASMx64Instructions.hpp"
 
 #include <Zydis/Zydis.h>
 #include <z3++.h>

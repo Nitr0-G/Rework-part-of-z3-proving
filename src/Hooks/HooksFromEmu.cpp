@@ -1,5 +1,5 @@
 #include "HooksFromEmu.hpp"
-#include "FirstPhase/FirstPhase.hpp"
+#include "Phases/FirstPhase.hpp"
 
 #include <Zydis/Zydis.h>
 #include <unicorn/unicorn.h>

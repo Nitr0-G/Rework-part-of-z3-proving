@@ -1,6 +1,6 @@
-#include "FirstPhase.hpp"
-#include "D:\Programs\Soft\Coding\C\VisualStudio\Coders\DynamicRetDecWinServ2022\src\dynamic-retdec-decompiler\z3\z3states.hpp"
-#include "D:\Programs\Soft\Coding\C\VisualStudio\Coders\DynamicRetDecWinServ2022\src\dynamic-retdec-decompiler\z3\z3ASMx64Instructions.hpp"
+#include "Phases/FirstPhase.hpp"
+#include "z3/z3states.hpp"
+#include "z3/z3ASMx64Instructions.hpp"
 
 #include <Zydis/Zydis.h>
 #include <z3++.h>
