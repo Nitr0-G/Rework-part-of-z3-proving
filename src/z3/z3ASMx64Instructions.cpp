@@ -2,6 +2,8 @@
 #include "z3/z3ASMx64Instructions.hpp"
 
 #include <Zydis/Zydis.h>
+#include <unicorn/unicorn.h>
+#include <unicorn/x86.h>
 #include <z3++.h>
 
 #include <iostream>
@@ -347,6 +349,305 @@ namespace Z3SystemTranslateFuncs {
 		std::cout << std::boolalpha << isEven << std::endl;
 		return isEven;
 	}
+
+	static inline uint64_t get_val_reg64(uc_engine* uc, ZydisDecodedOperand op)
+	{
+		uint64_t Val = 0;
+		if (op.type == ZYDIS_OPERAND_TYPE_REGISTER)
+		{
+			switch (op.reg.value)
+			{
+			case ZYDIS_REGISTER_RAX: uc_reg_read(uc, UC_X86_REG_RAX, &Val); return Val;
+			case ZYDIS_REGISTER_EAX: uc_reg_read(uc, UC_X86_REG_EAX, &Val); return Val;
+			case ZYDIS_REGISTER_AX: uc_reg_read(uc, UC_X86_REG_AX, &Val); return Val;
+			case ZYDIS_REGISTER_AH: uc_reg_read(uc, UC_X86_REG_AH, &Val); return Val;
+			case ZYDIS_REGISTER_AL: uc_reg_read(uc, UC_X86_REG_AL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RBX: uc_reg_read(uc, UC_X86_REG_RBX, &Val); return Val;
+			case ZYDIS_REGISTER_EBX: uc_reg_read(uc, UC_X86_REG_EBX, &Val); return Val;
+			case ZYDIS_REGISTER_BX: uc_reg_read(uc, UC_X86_REG_BX, &Val); return Val;
+			case ZYDIS_REGISTER_BH: uc_reg_read(uc, UC_X86_REG_BH, &Val); return Val;
+			case ZYDIS_REGISTER_BL: uc_reg_read(uc, UC_X86_REG_BL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RCX: uc_reg_read(uc, UC_X86_REG_RCX, &Val); return Val;
+			case ZYDIS_REGISTER_ECX: uc_reg_read(uc, UC_X86_REG_ECX, &Val); return Val;
+			case ZYDIS_REGISTER_CX: uc_reg_read(uc, UC_X86_REG_CX, &Val); return Val;
+			case ZYDIS_REGISTER_CH: uc_reg_read(uc, UC_X86_REG_CH, &Val); return Val;
+			case ZYDIS_REGISTER_CL: uc_reg_read(uc, UC_X86_REG_CL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RDX: uc_reg_read(uc, UC_X86_REG_RDX, &Val); return Val;
+			case ZYDIS_REGISTER_EDX: uc_reg_read(uc, UC_X86_REG_EDX, &Val); return Val;
+			case ZYDIS_REGISTER_DX: uc_reg_read(uc, UC_X86_REG_DX, &Val); return Val;
+			case ZYDIS_REGISTER_DH: uc_reg_read(uc, UC_X86_REG_DH, &Val); return Val;
+			case ZYDIS_REGISTER_DL: uc_reg_read(uc, UC_X86_REG_DL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RBP: uc_reg_read(uc, UC_X86_REG_RBP, &Val); return Val;
+			case ZYDIS_REGISTER_EBP: uc_reg_read(uc, UC_X86_REG_EBP, &Val); return Val;
+			case ZYDIS_REGISTER_BP: uc_reg_read(uc, UC_X86_REG_BP, &Val); return Val;
+			case ZYDIS_REGISTER_BPL: uc_reg_read(uc, UC_X86_REG_BPL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RSP: uc_reg_read(uc, UC_X86_REG_RSP, &Val); return Val;
+			case ZYDIS_REGISTER_ESP: uc_reg_read(uc, UC_X86_REG_ESP, &Val); return Val;
+			case ZYDIS_REGISTER_SP: uc_reg_read(uc, UC_X86_REG_SP, &Val); return Val;
+			case ZYDIS_REGISTER_SPL: uc_reg_read(uc, UC_X86_REG_SPL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RSI: uc_reg_read(uc, UC_X86_REG_RSI, &Val); return Val;
+			case ZYDIS_REGISTER_ESI: uc_reg_read(uc, UC_X86_REG_ESI, &Val); return Val;
+			case ZYDIS_REGISTER_SI: uc_reg_read(uc, UC_X86_REG_SI, &Val); return Val;
+			case ZYDIS_REGISTER_SIL: uc_reg_read(uc, UC_X86_REG_SIL, &Val); return Val;
+
+			case ZYDIS_REGISTER_RDI: uc_reg_read(uc, UC_X86_REG_RDI, &Val); return Val;
+			case ZYDIS_REGISTER_EDI: uc_reg_read(uc, UC_X86_REG_EDI, &Val); return Val;
+			case ZYDIS_REGISTER_DI: uc_reg_read(uc, UC_X86_REG_DI, &Val); return Val;
+			case ZYDIS_REGISTER_DIL: uc_reg_read(uc, UC_X86_REG_DIL, &Val); return Val;
+
+			case ZYDIS_REGISTER_R8: uc_reg_read(uc, UC_X86_REG_R8, &Val); return Val;
+			case ZYDIS_REGISTER_R8D: uc_reg_read(uc, UC_X86_REG_R8D, &Val); return Val;
+			case ZYDIS_REGISTER_R8W: uc_reg_read(uc, UC_X86_REG_R8W, &Val); return Val;
+			case ZYDIS_REGISTER_R8B: uc_reg_read(uc, UC_X86_REG_R8B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R9: uc_reg_read(uc, UC_X86_REG_R9, &Val); return Val;
+			case ZYDIS_REGISTER_R9D: uc_reg_read(uc, UC_X86_REG_R9D, &Val); return Val;
+			case ZYDIS_REGISTER_R9W: uc_reg_read(uc, UC_X86_REG_R9W, &Val); return Val;
+			case ZYDIS_REGISTER_R9B: uc_reg_read(uc, UC_X86_REG_R9B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R10: uc_reg_read(uc, UC_X86_REG_R10, &Val); return Val;
+			case ZYDIS_REGISTER_R10D: uc_reg_read(uc, UC_X86_REG_R10D, &Val); return Val;
+			case ZYDIS_REGISTER_R10W: uc_reg_read(uc, UC_X86_REG_R10W, &Val); return Val;
+			case ZYDIS_REGISTER_R10B: uc_reg_read(uc, UC_X86_REG_R10B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R11: uc_reg_read(uc, UC_X86_REG_R11, &Val); return Val;
+			case ZYDIS_REGISTER_R11D: uc_reg_read(uc, UC_X86_REG_R11D, &Val); return Val;
+			case ZYDIS_REGISTER_R11W: uc_reg_read(uc, UC_X86_REG_R11W, &Val); return Val;
+			case ZYDIS_REGISTER_R11B: uc_reg_read(uc, UC_X86_REG_R11B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R12: uc_reg_read(uc, UC_X86_REG_R12, &Val); return Val;
+			case ZYDIS_REGISTER_R12D: uc_reg_read(uc, UC_X86_REG_R12D, &Val); return Val;
+			case ZYDIS_REGISTER_R12W: uc_reg_read(uc, UC_X86_REG_R12W, &Val); return Val;
+			case ZYDIS_REGISTER_R12B: uc_reg_read(uc, UC_X86_REG_R12B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R13: uc_reg_read(uc, UC_X86_REG_R13, &Val); return Val;
+			case ZYDIS_REGISTER_R13D: uc_reg_read(uc, UC_X86_REG_R13D, &Val); return Val;
+			case ZYDIS_REGISTER_R13W: uc_reg_read(uc, UC_X86_REG_R13W, &Val); return Val;
+			case ZYDIS_REGISTER_R13B: uc_reg_read(uc, UC_X86_REG_R13B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R14: uc_reg_read(uc, UC_X86_REG_R14, &Val); return Val;
+			case ZYDIS_REGISTER_R14D: uc_reg_read(uc, UC_X86_REG_R14D, &Val); return Val;
+			case ZYDIS_REGISTER_R14W: uc_reg_read(uc, UC_X86_REG_R14W, &Val); return Val;
+			case ZYDIS_REGISTER_R14B: uc_reg_read(uc, UC_X86_REG_R14B, &Val); return Val;
+
+			case ZYDIS_REGISTER_R15: uc_reg_read(uc, UC_X86_REG_R15, &Val); return Val;
+			case ZYDIS_REGISTER_R15D: uc_reg_read(uc, UC_X86_REG_R15D, &Val); return Val;
+			case ZYDIS_REGISTER_R15W: uc_reg_read(uc, UC_X86_REG_R15W, &Val); return Val;
+			case ZYDIS_REGISTER_R15B: uc_reg_read(uc, UC_X86_REG_R15B, &Val); return Val;
+
+			case ZYDIS_REGISTER_RFLAGS: uc_reg_read(uc, UC_X86_REG_RFLAGS, &Val); return Val;
+
+			default:
+				throw std::exception("bad register");
+			}
+		}
+		else if (op.type == ZYDIS_OPERAND_TYPE_IMMEDIATE)
+		{
+			uint64_t Val = static_cast<uint64_t>(op.imm.value.u); return Val;
+		}
+		/*
+		else if (op.type == ZYDIS_OPERAND_TYPE_MEMORY)
+		{
+			if (op.mem.base != ZYDIS_REGISTER_NONE)
+			{
+				switch (op.mem.base)
+				{
+				case ZYDIS_REGISTER_RAX: uc_reg_read(uc, UC_X86_REG_RAX, &Val); break;
+				case ZYDIS_REGISTER_EAX: uc_reg_read(uc, UC_X86_REG_EAX, &Val); break;
+				case ZYDIS_REGISTER_AX: uc_reg_read(uc, UC_X86_REG_AX, &Val); break;
+				case ZYDIS_REGISTER_AH: uc_reg_read(uc, UC_X86_REG_AH, &Val); break;
+				case ZYDIS_REGISTER_AL: uc_reg_read(uc, UC_X86_REG_AL, &Val); break;
+
+				case ZYDIS_REGISTER_RBX: uc_reg_read(uc, UC_X86_REG_RBX, &Val); return Val;
+				case ZYDIS_REGISTER_EBX: uc_reg_read(uc, UC_X86_REG_EBX, &Val); return Val;
+				case ZYDIS_REGISTER_BX: uc_reg_read(uc, UC_X86_REG_BX, &Val); return Val;
+				case ZYDIS_REGISTER_BH: uc_reg_read(uc, UC_X86_REG_BH, &Val); return Val;
+				case ZYDIS_REGISTER_BL: uc_reg_read(uc, UC_X86_REG_BL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RCX: uc_reg_read(uc, UC_X86_REG_RCX, &Val); return Val;
+				case ZYDIS_REGISTER_ECX: uc_reg_read(uc, UC_X86_REG_ECX, &Val); return Val;
+				case ZYDIS_REGISTER_CX: uc_reg_read(uc, UC_X86_REG_CX, &Val); return Val;
+				case ZYDIS_REGISTER_CH: uc_reg_read(uc, UC_X86_REG_CH, &Val); return Val;
+				case ZYDIS_REGISTER_CL: uc_reg_read(uc, UC_X86_REG_CL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RDX: uc_reg_read(uc, UC_X86_REG_RDX, &Val); return Val;
+				case ZYDIS_REGISTER_EDX: uc_reg_read(uc, UC_X86_REG_EDX, &Val); return Val;
+				case ZYDIS_REGISTER_DX: uc_reg_read(uc, UC_X86_REG_DX, &Val); return Val;
+				case ZYDIS_REGISTER_DH: uc_reg_read(uc, UC_X86_REG_DH, &Val); return Val;
+				case ZYDIS_REGISTER_DL: uc_reg_read(uc, UC_X86_REG_DL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RBP: uc_reg_read(uc, UC_X86_REG_RBP, &Val); return Val;
+				case ZYDIS_REGISTER_EBP: uc_reg_read(uc, UC_X86_REG_EBP, &Val); return Val;
+				case ZYDIS_REGISTER_BP: uc_reg_read(uc, UC_X86_REG_BP, &Val); return Val;
+				case ZYDIS_REGISTER_BPL: uc_reg_read(uc, UC_X86_REG_BPL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RSP: uc_reg_read(uc, UC_X86_REG_RSP, &Val); return Val;
+				case ZYDIS_REGISTER_ESP: uc_reg_read(uc, UC_X86_REG_ESP, &Val); return Val;
+				case ZYDIS_REGISTER_SP: uc_reg_read(uc, UC_X86_REG_SP, &Val); return Val;
+				case ZYDIS_REGISTER_SPL: uc_reg_read(uc, UC_X86_REG_SPL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RSI: uc_reg_read(uc, UC_X86_REG_RSI, &Val); return Val;
+				case ZYDIS_REGISTER_ESI: uc_reg_read(uc, UC_X86_REG_ESI, &Val); return Val;
+				case ZYDIS_REGISTER_SI: uc_reg_read(uc, UC_X86_REG_SI, &Val); return Val;
+				case ZYDIS_REGISTER_SIL: uc_reg_read(uc, UC_X86_REG_SIL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RDI: uc_reg_read(uc, UC_X86_REG_RDI, &Val); return Val;
+				case ZYDIS_REGISTER_EDI: uc_reg_read(uc, UC_X86_REG_EDI, &Val); return Val;
+				case ZYDIS_REGISTER_DI: uc_reg_read(uc, UC_X86_REG_DI, &Val); return Val;
+				case ZYDIS_REGISTER_DIL: uc_reg_read(uc, UC_X86_REG_DIL, &Val); return Val;
+
+				case ZYDIS_REGISTER_R8: uc_reg_read(uc, UC_X86_REG_R8, &Val); return Val;
+				case ZYDIS_REGISTER_R8D: uc_reg_read(uc, UC_X86_REG_R8D, &Val); return Val;
+				case ZYDIS_REGISTER_R8W: uc_reg_read(uc, UC_X86_REG_R8W, &Val); return Val;
+				case ZYDIS_REGISTER_R8B: uc_reg_read(uc, UC_X86_REG_R8B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R9: uc_reg_read(uc, UC_X86_REG_R9, &Val); return Val;
+				case ZYDIS_REGISTER_R9D: uc_reg_read(uc, UC_X86_REG_R9D, &Val); return Val;
+				case ZYDIS_REGISTER_R9W: uc_reg_read(uc, UC_X86_REG_R9W, &Val); return Val;
+				case ZYDIS_REGISTER_R9B: uc_reg_read(uc, UC_X86_REG_R9B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R10: uc_reg_read(uc, UC_X86_REG_R10, &Val); return Val;
+				case ZYDIS_REGISTER_R10D: uc_reg_read(uc, UC_X86_REG_R10D, &Val); return Val;
+				case ZYDIS_REGISTER_R10W: uc_reg_read(uc, UC_X86_REG_R10W, &Val); return Val;
+				case ZYDIS_REGISTER_R10B: uc_reg_read(uc, UC_X86_REG_R10B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R11: uc_reg_read(uc, UC_X86_REG_R11, &Val); return Val;
+				case ZYDIS_REGISTER_R11D: uc_reg_read(uc, UC_X86_REG_R11D, &Val); return Val;
+				case ZYDIS_REGISTER_R11W: uc_reg_read(uc, UC_X86_REG_R11W, &Val); return Val;
+				case ZYDIS_REGISTER_R11B: uc_reg_read(uc, UC_X86_REG_R11B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R12: uc_reg_read(uc, UC_X86_REG_R12, &Val); return Val;
+				case ZYDIS_REGISTER_R12D: uc_reg_read(uc, UC_X86_REG_R12D, &Val); return Val;
+				case ZYDIS_REGISTER_R12W: uc_reg_read(uc, UC_X86_REG_R12W, &Val); return Val;
+				case ZYDIS_REGISTER_R12B: uc_reg_read(uc, UC_X86_REG_R12B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R13: uc_reg_read(uc, UC_X86_REG_R13, &Val); return Val;
+				case ZYDIS_REGISTER_R13D: uc_reg_read(uc, UC_X86_REG_R13D, &Val); return Val;
+				case ZYDIS_REGISTER_R13W: uc_reg_read(uc, UC_X86_REG_R13W, &Val); return Val;
+				case ZYDIS_REGISTER_R13B: uc_reg_read(uc, UC_X86_REG_R13B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R14: uc_reg_read(uc, UC_X86_REG_R14, &Val); return Val;
+				case ZYDIS_REGISTER_R14D: uc_reg_read(uc, UC_X86_REG_R14D, &Val); return Val;
+				case ZYDIS_REGISTER_R14W: uc_reg_read(uc, UC_X86_REG_R14W, &Val); return Val;
+				case ZYDIS_REGISTER_R14B: uc_reg_read(uc, UC_X86_REG_R14B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R15: uc_reg_read(uc, UC_X86_REG_R15, &Val); return Val;
+				case ZYDIS_REGISTER_R15D: uc_reg_read(uc, UC_X86_REG_R15D, &Val); return Val;
+				case ZYDIS_REGISTER_R15W: uc_reg_read(uc, UC_X86_REG_R15W, &Val); return Val;
+				case ZYDIS_REGISTER_R15B: uc_reg_read(uc, UC_X86_REG_R15B, &Val); return Val;
+
+				case ZYDIS_REGISTER_RFLAGS: uc_reg_read(uc, UC_X86_REG_RFLAGS, &Val); return Val;
+
+				default:
+					throw std::exception("bad register");
+				}
+			}
+			if (op.mem.index != ZYDIS_REGISTER_NONE)
+			{
+				switch (op.mem.index)
+				{
+				case ZYDIS_REGISTER_RAX: uc_reg_read(uc, UC_X86_REG_RAX, &Val); return Val;
+				case ZYDIS_REGISTER_EAX: uc_reg_read(uc, UC_X86_REG_EAX, &Val); return Val;
+				case ZYDIS_REGISTER_AX: uc_reg_read(uc, UC_X86_REG_AX, &Val); return Val;
+				case ZYDIS_REGISTER_AH: uc_reg_read(uc, UC_X86_REG_AH, &Val); return Val;
+				case ZYDIS_REGISTER_AL: uc_reg_read(uc, UC_X86_REG_AL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RBX: uc_reg_read(uc, UC_X86_REG_RBX, &Val); return Val;
+				case ZYDIS_REGISTER_EBX: uc_reg_read(uc, UC_X86_REG_EBX, &Val); return Val;
+				case ZYDIS_REGISTER_BX: uc_reg_read(uc, UC_X86_REG_BX, &Val); return Val;
+				case ZYDIS_REGISTER_BH: uc_reg_read(uc, UC_X86_REG_BH, &Val); return Val;
+				case ZYDIS_REGISTER_BL: uc_reg_read(uc, UC_X86_REG_BL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RCX: uc_reg_read(uc, UC_X86_REG_RCX, &Val); return Val;
+				case ZYDIS_REGISTER_ECX: uc_reg_read(uc, UC_X86_REG_ECX, &Val); return Val;
+				case ZYDIS_REGISTER_CX: uc_reg_read(uc, UC_X86_REG_CX, &Val); return Val;
+				case ZYDIS_REGISTER_CH: uc_reg_read(uc, UC_X86_REG_CH, &Val); return Val;
+				case ZYDIS_REGISTER_CL: uc_reg_read(uc, UC_X86_REG_CL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RDX: uc_reg_read(uc, UC_X86_REG_RDX, &Val); return Val;
+				case ZYDIS_REGISTER_EDX: uc_reg_read(uc, UC_X86_REG_EDX, &Val); return Val;
+				case ZYDIS_REGISTER_DX: uc_reg_read(uc, UC_X86_REG_DX, &Val); return Val;
+				case ZYDIS_REGISTER_DH: uc_reg_read(uc, UC_X86_REG_DH, &Val); return Val;
+				case ZYDIS_REGISTER_DL: uc_reg_read(uc, UC_X86_REG_DL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RBP: uc_reg_read(uc, UC_X86_REG_RBP, &Val); return Val;
+				case ZYDIS_REGISTER_EBP: uc_reg_read(uc, UC_X86_REG_EBP, &Val); return Val;
+				case ZYDIS_REGISTER_BP: uc_reg_read(uc, UC_X86_REG_BP, &Val); return Val;
+				case ZYDIS_REGISTER_BPL: uc_reg_read(uc, UC_X86_REG_BPL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RSP: uc_reg_read(uc, UC_X86_REG_RSP, &Val); return Val;
+				case ZYDIS_REGISTER_ESP: uc_reg_read(uc, UC_X86_REG_ESP, &Val); return Val;
+				case ZYDIS_REGISTER_SP: uc_reg_read(uc, UC_X86_REG_SP, &Val); return Val;
+				case ZYDIS_REGISTER_SPL: uc_reg_read(uc, UC_X86_REG_SPL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RSI: uc_reg_read(uc, UC_X86_REG_RSI, &Val); return Val;
+				case ZYDIS_REGISTER_ESI: uc_reg_read(uc, UC_X86_REG_ESI, &Val); return Val;
+				case ZYDIS_REGISTER_SI: uc_reg_read(uc, UC_X86_REG_SI, &Val); return Val;
+				case ZYDIS_REGISTER_SIL: uc_reg_read(uc, UC_X86_REG_SIL, &Val); return Val;
+
+				case ZYDIS_REGISTER_RDI: uc_reg_read(uc, UC_X86_REG_RDI, &Val); return Val;
+				case ZYDIS_REGISTER_EDI: uc_reg_read(uc, UC_X86_REG_EDI, &Val); return Val;
+				case ZYDIS_REGISTER_DI: uc_reg_read(uc, UC_X86_REG_DI, &Val); return Val;
+				case ZYDIS_REGISTER_DIL: uc_reg_read(uc, UC_X86_REG_DIL, &Val); return Val;
+
+				case ZYDIS_REGISTER_R8: uc_reg_read(uc, UC_X86_REG_R8, &Val); return Val;
+				case ZYDIS_REGISTER_R8D: uc_reg_read(uc, UC_X86_REG_R8D, &Val); return Val;
+				case ZYDIS_REGISTER_R8W: uc_reg_read(uc, UC_X86_REG_R8W, &Val); return Val;
+				case ZYDIS_REGISTER_R8B: uc_reg_read(uc, UC_X86_REG_R8B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R9: uc_reg_read(uc, UC_X86_REG_R9, &Val); return Val;
+				case ZYDIS_REGISTER_R9D: uc_reg_read(uc, UC_X86_REG_R9D, &Val); return Val;
+				case ZYDIS_REGISTER_R9W: uc_reg_read(uc, UC_X86_REG_R9W, &Val); return Val;
+				case ZYDIS_REGISTER_R9B: uc_reg_read(uc, UC_X86_REG_R9B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R10: uc_reg_read(uc, UC_X86_REG_R10, &Val); return Val;
+				case ZYDIS_REGISTER_R10D: uc_reg_read(uc, UC_X86_REG_R10D, &Val); return Val;
+				case ZYDIS_REGISTER_R10W: uc_reg_read(uc, UC_X86_REG_R10W, &Val); return Val;
+				case ZYDIS_REGISTER_R10B: uc_reg_read(uc, UC_X86_REG_R10B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R11: uc_reg_read(uc, UC_X86_REG_R11, &Val); return Val;
+				case ZYDIS_REGISTER_R11D: uc_reg_read(uc, UC_X86_REG_R11D, &Val); return Val;
+				case ZYDIS_REGISTER_R11W: uc_reg_read(uc, UC_X86_REG_R11W, &Val); return Val;
+				case ZYDIS_REGISTER_R11B: uc_reg_read(uc, UC_X86_REG_R11B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R12: uc_reg_read(uc, UC_X86_REG_R12, &Val); return Val;
+				case ZYDIS_REGISTER_R12D: uc_reg_read(uc, UC_X86_REG_R12D, &Val); return Val;
+				case ZYDIS_REGISTER_R12W: uc_reg_read(uc, UC_X86_REG_R12W, &Val); return Val;
+				case ZYDIS_REGISTER_R12B: uc_reg_read(uc, UC_X86_REG_R12B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R13: uc_reg_read(uc, UC_X86_REG_R13, &Val); return Val;
+				case ZYDIS_REGISTER_R13D: uc_reg_read(uc, UC_X86_REG_R13D, &Val); return Val;
+				case ZYDIS_REGISTER_R13W: uc_reg_read(uc, UC_X86_REG_R13W, &Val); return Val;
+				case ZYDIS_REGISTER_R13B: uc_reg_read(uc, UC_X86_REG_R13B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R14: uc_reg_read(uc, UC_X86_REG_R14, &Val); return Val;
+				case ZYDIS_REGISTER_R14D: uc_reg_read(uc, UC_X86_REG_R14D, &Val); return Val;
+				case ZYDIS_REGISTER_R14W: uc_reg_read(uc, UC_X86_REG_R14W, &Val); return Val;
+				case ZYDIS_REGISTER_R14B: uc_reg_read(uc, UC_X86_REG_R14B, &Val); return Val;
+
+				case ZYDIS_REGISTER_R15: uc_reg_read(uc, UC_X86_REG_R15, &Val); return Val;
+				case ZYDIS_REGISTER_R15D: uc_reg_read(uc, UC_X86_REG_R15D, &Val); return Val;
+				case ZYDIS_REGISTER_R15W: uc_reg_read(uc, UC_X86_REG_R15W, &Val); return Val;
+				case ZYDIS_REGISTER_R15B: uc_reg_read(uc, UC_X86_REG_R15B, &Val); return Val;
+
+				case ZYDIS_REGISTER_RFLAGS: uc_reg_read(uc, UC_X86_REG_RFLAGS, &Val); return Val;
+
+				default:
+					throw std::exception("bad register");
+				}
+			}
+
+		}
+		*/
+		else
+			throw std::exception("bad operand type in get_val_reg64 function");
+	}
 }
 
 namespace AsmX64InstrsTranslate {
@@ -457,7 +758,12 @@ namespace AsmX64InstrsTranslate {
 	{
 		namespace arithmetic
 		{
-			static inline void translate_add(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_add(
+				uc_engine* uc,
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -468,7 +774,7 @@ namespace AsmX64InstrsTranslate {
 					z3::expr e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t add = e1.simplify().get_numeral_uint64() + e2.simplify().get_numeral_uint64();
+					uint64_t add = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) + Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
 
 					*dst = new z3::expr(z3c, e1 + e2);
 					
@@ -486,7 +792,12 @@ namespace AsmX64InstrsTranslate {
 					throw std::exception("bad operand count in translate_add function");
 			}
 			
-			static inline void translate_sub(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_sub(
+				uc_engine* uc,
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -497,7 +808,7 @@ namespace AsmX64InstrsTranslate {
 					z3::expr e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t sub = e1.simplify().get_numeral_uint64() - e2.simplify().get_numeral_uint64();
+					uint64_t sub = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) - Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
 
 					*dst = new z3::expr(z3c, e1 - e2);
 
@@ -515,7 +826,12 @@ namespace AsmX64InstrsTranslate {
 					throw std::exception("bad operand count in translate_sub function");
 			}	
 
-			static inline void translate_test(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_test(
+				uc_engine* uc, 
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -526,7 +842,9 @@ namespace AsmX64InstrsTranslate {
 					z3::expr e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t utest = e1.simplify().get_numeral_uint64() * e2.simplify().get_numeral_uint64();
+
+					uint64_t utest = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) * Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
+
 					z3::expr test = e1 * e2;
 					*dst = new z3::expr(z3c, e1);
 
@@ -541,7 +859,12 @@ namespace AsmX64InstrsTranslate {
 					throw std::exception("bad operand count in translate_test function");
 			}
 
-			static inline void translate_cmp(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_cmp(
+				uc_engine* uc, 
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -552,7 +875,7 @@ namespace AsmX64InstrsTranslate {
 					z3::expr e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t ucmp = e1.simplify().get_numeral_uint64() - e2.simplify().get_numeral_uint64();
+					uint64_t ucmp = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) - Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
 
 					z3::expr cmp = e1 - e2;
 					*dst = new z3::expr(z3c, e1);
@@ -575,7 +898,12 @@ namespace AsmX64InstrsTranslate {
 
 		namespace Bitwise
 		{
-			static inline void translate_xor(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_xor(
+				uc_engine* uc, 
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -586,7 +914,8 @@ namespace AsmX64InstrsTranslate {
 					z3::expr e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t uxor = e1.simplify().get_numeral_uint64() ^ e2.simplify().get_numeral_uint64();
+
+					uint64_t uxor = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) ^ Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
 
 					*dst = new z3::expr(z3c, e1^e2);
 
@@ -600,7 +929,12 @@ namespace AsmX64InstrsTranslate {
 					throw std::exception("bad operand count in translate_xor function");
 			}
 
-			static inline void translate_and(z3::context& z3c, x8664_ctx& old_state, x8664_ctx& new_state, ZydisDisassembledInstruction ins)
+			static inline void translate_and(
+				uc_engine* uc, 
+				z3::context& z3c, 
+				x8664_ctx& old_state, 
+				x8664_ctx& new_state, 
+				ZydisDisassembledInstruction ins)
 			{
 				if (ins.info.operand_count_visible == 2)
 				{
@@ -611,7 +945,8 @@ namespace AsmX64InstrsTranslate {
 					z3::expr& e2 = **Z3SystemTranslateFuncs::get_val_expr(z3c, old_state, op2);
 
 					z3::expr** dst = Z3SystemTranslateFuncs::get_val_expr(z3c, new_state, op1);
-					uint64_t uand = e1.simplify().get_numeral_uint64() & e2.simplify().get_numeral_uint64();
+
+					uint64_t uand = Z3SystemTranslateFuncs::get_val_reg64(uc, op1) & Z3SystemTranslateFuncs::get_val_reg64(uc, op2);
 
 					*dst = new z3::expr(z3c, e1 & e2);
 
@@ -627,7 +962,7 @@ namespace AsmX64InstrsTranslate {
 		}
 	}
 
-	void InstructionChooser(z3::context& z3c, ZydisDisassembledInstruction ins, x8664_ctx& old_state)
+	void InstructionChooser(uc_engine* uc, z3::context& z3c, ZydisDisassembledInstruction ins, x8664_ctx& old_state)
 	{
 		x8664_ctx new_state;
 		switch (ins.info.mnemonic)
@@ -638,13 +973,13 @@ namespace AsmX64InstrsTranslate {
 		case ZYDIS_MNEMONIC_PUSHFQ: AsmX64InstrsTranslate::non_algebraic::translate_pushfq(z3c, old_state, new_state, ins); break;
 		case ZYDIS_MNEMONIC_POPFQ: AsmX64InstrsTranslate::non_algebraic::translate_popfq(z3c, old_state, new_state, ins); break;
 
-		case ZYDIS_MNEMONIC_ADD: AsmX64InstrsTranslate::algebraic::arithmetic::translate_add(z3c, old_state, new_state, ins); break;
-		case ZYDIS_MNEMONIC_SUB: AsmX64InstrsTranslate::algebraic::arithmetic::translate_sub(z3c, old_state, new_state, ins); break;
-		case ZYDIS_MNEMONIC_TEST: AsmX64InstrsTranslate::algebraic::arithmetic::translate_test(z3c, old_state, new_state, ins); break;
-		case ZYDIS_MNEMONIC_CMP: AsmX64InstrsTranslate::algebraic::arithmetic::translate_cmp(z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_ADD: AsmX64InstrsTranslate::algebraic::arithmetic::translate_add(uc, z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_SUB: AsmX64InstrsTranslate::algebraic::arithmetic::translate_sub(uc, z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_TEST: AsmX64InstrsTranslate::algebraic::arithmetic::translate_test(uc, z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_CMP: AsmX64InstrsTranslate::algebraic::arithmetic::translate_cmp(uc, z3c, old_state, new_state, ins); break;
 
-		case ZYDIS_MNEMONIC_AND: AsmX64InstrsTranslate::algebraic::Bitwise::translate_and(z3c, old_state, new_state, ins); break;
-		case ZYDIS_MNEMONIC_XOR: AsmX64InstrsTranslate::algebraic::Bitwise::translate_xor(z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_AND: AsmX64InstrsTranslate::algebraic::Bitwise::translate_and(uc, z3c, old_state, new_state, ins); break;
+		case ZYDIS_MNEMONIC_XOR: AsmX64InstrsTranslate::algebraic::Bitwise::translate_xor(uc, z3c, old_state, new_state, ins); break;
 
 		default:
 			break;

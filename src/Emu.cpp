@@ -181,6 +181,48 @@ namespace Emu
 		err = uc_mem_map(uc, Registers.fs_address, 0x1000, UC_PROT_ALL);
 	};
 
+	static inline int EmuStart(
+		uc_engine* uc,
+		HookCode_& HookCode,
+		LoaderEmu EmuLoader,
+		uint64_t SizeOfAll,
+		uc_err err)
+	{
+		++PhasesCounter;
+
+		err = uc_emu_start(uc, EmuLoader.EP, EmuLoader.EP + SizeOfAll, 0, 17);
+		if (err)
+		{
+			uint64_t RSP, RIP;
+			printf("Failed on uc_emu_start() with error returned %u: %s\n", err, uc_strerror(err));
+			uc_reg_read(uc, UC_X86_REG_RSP, &RSP); uc_reg_read(uc, UC_X86_REG_RIP, &RIP);
+			std::cout << std::hex << RSP << "\n\n"; std::cout << std::hex << RIP;
+		}
+		if (PhasesCounter == 1)
+		{
+			HookCode.FirstPhaseDone = true;
+
+			system("cls");
+
+			std::cout << "The second phase" << "\n\n";
+			EmuStart(uc, HookCode, EmuLoader, SizeOfAll, err);
+		}
+		else if (PhasesCounter == 2)
+		{
+			HookCode.SecondPhaseDone = true;
+
+			system("cls");
+
+			std::cout << "The third phase" << "\n\n";
+			EmuStart(uc, HookCode, EmuLoader, SizeOfAll, err);
+		}
+		else if (PhasesCounter == 5)
+		{
+			return 0;
+		}
+		return 0;
+	}
+
 	int UcStartUp(
 		std::string& lpFilePathWithName) 
 	{
@@ -195,7 +237,7 @@ namespace Emu
 		uc_hook hook_mem_write = 0;
 		uc_engine* uc = nullptr;
 		uc_err err{};
-		uint64_t SizeOfAll = 0; ++PhasesCounter;
+		uint64_t SizeOfAll = 0;
 
 		EmuLoader = PeLoaderEmu::PeInit(lpFilePathWithName, EmuLoader);
 
@@ -223,7 +265,8 @@ namespace Emu
 		{
 			SizeOfAll =+ EmuLoader.svSizes[i];
 		}
-		
+		EmuStart(uc, HookCode, EmuLoader, SizeOfAll, err);
+		/*
 		err = uc_emu_start(uc, EmuLoader.EP, EmuLoader.EP + SizeOfAll, 0, 12);
 		if (err)
 		{
@@ -234,14 +277,29 @@ namespace Emu
 		}
 		if (PhasesCounter == 1)
 		{
-			HookCode.FirstPhaseDone = true; 
+			HookCode.FirstPhaseDone = true;
+
 			system("cls");
+
+
+
 			std::cout << "The second phase" << "\n\n";
 			UcStartUp(lpFilePathWithName);
 		}
-		if (PhasesCounter == 5)
+		else if (PhasesCounter == 2)
+		{
+			HookCode.SecondPhaseDone = true;
+
+			system("cls");
+
+			std::cout << "The third phase" << "\n\n";
+			UcStartUp(lpFilePathWithName);
+		}
+		else if (PhasesCounter == 5)
 		{
 			return 0;
 		}
+		*/
+		return 0;
 	}
 }

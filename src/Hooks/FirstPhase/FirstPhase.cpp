@@ -3,6 +3,8 @@
 #include "z3/z3ASMx64Instructions.hpp"
 
 #include <Zydis/Zydis.h>
+#include <unicorn/unicorn.h>
+#include <unicorn/x86.h>
 #include <z3++.h>
 
 #include <immintrin.h>
@@ -124,26 +126,25 @@ namespace FirstPhase {
 		}
 
 		static inline opaque_predicate::opaque_predicate_ is_opaque_predicate(
+			uc_engine* uc,
 			bool FirstPhaseInProcess,
 			std::vector<ZydisDisassembledInstruction>& OpaquePredicateCode)
 		{
 			if (FirstPhaseInProcess == false)
 			{
-				//x8664_ctx state; x8664_ctx new_state;
-				//z3::context z3c;
-
 				state.create_initial_state(z3c, state);
 			}
 			for (auto& OpaquePredicateCodeIter : OpaquePredicateCode)
 			{
-				AsmX64InstrsTranslate::InstructionChooser(z3c, OpaquePredicateCodeIter, state);
+				AsmX64InstrsTranslate::InstructionChooser(uc, z3c, OpaquePredicateCodeIter, state);
 			}
-			FirstPhaseInProcess = true;
+			//FirstPhaseInProcess = true;
 			return FlagInOpaquePredicate::ConditionCheck(z3c, state, OpaquePredicateCode[OpaquePredicateCode.size() - 1]);
 		}
 	}
 
 	static inline void OpaquePredicateRemoverInit(
+		uc_engine* uc,
 		ZydisDisassembledInstruction& instruction,
 		bool FirstPhaseInProcess,
 		std::vector<ZydisDisassembledInstruction>& OpaquePredicateCode)
@@ -153,7 +154,7 @@ namespace FirstPhase {
 		std::cout << (jcc_instr.text) << ". instruction is conditional " << std::endl;
 		std::cout << " > testing: " << jcc_instr.text << std::endl;
 
-		opaque_predicate::opaque_predicate_ result = OpaquePredicate::is_opaque_predicate(FirstPhaseInProcess,OpaquePredicateCode);
+		opaque_predicate::opaque_predicate_ result = OpaquePredicate::is_opaque_predicate(uc, FirstPhaseInProcess,OpaquePredicateCode);
 
 		switch (result)
 		{
@@ -175,12 +176,13 @@ namespace FirstPhase {
 			break;
 		}
 	}
+
 	void OpaquePredicateRemover(
+		uc_engine* uc,
 		ZydisDisassembledInstruction& instruction,
 		std::vector<ZydisDisassembledInstruction>& OpaquePredicateCode,
 		std::vector<ZyanU8>& Data,
-		bool FirstPhaseInProcess,
-		bool FirstPhaseDone)
+		bool FirstPhaseInProcess)
 	{
         std::vector<ZydisMnemonic>JccMnemonics{
 			ZYDIS_MNEMONIC_JNBE, ZYDIS_MNEMONIC_JNB, ZYDIS_MNEMONIC_JB,
@@ -196,7 +198,7 @@ namespace FirstPhase {
 		{
 			if (instruction.info.mnemonic == JccMnemonicsIter)
 			{
-				return OpaquePredicateRemoverInit(instruction, FirstPhaseInProcess, OpaquePredicateCode);
+				return OpaquePredicateRemoverInit(uc, instruction, FirstPhaseInProcess, OpaquePredicateCode);
 			}
 		}
 	}

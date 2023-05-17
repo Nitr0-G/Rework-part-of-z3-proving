@@ -1,5 +1,6 @@
 #include "HooksFromEmu.hpp"
 #include "Phases/FirstPhase.hpp"
+#include "Phases/SecondPhase.hpp"
 
 #include <Zydis/Zydis.h>
 #include <unicorn/unicorn.h>
@@ -65,12 +66,18 @@ namespace Hooks
 				HookCode_* HookCode = static_cast<HookCode_*>(user_data);
 				if (HookCode->FirstPhaseDone == false)
 				{
-					FirstPhase::OpaquePredicateRemover(instruction, HookCode->OpaquePredicateCode, Data, HookCode->FirstPhaseInProcess, HookCode->FirstPhaseDone);
+					FirstPhase::OpaquePredicateRemover(uc, instruction, HookCode->OpaquePredicateCode, Data, HookCode->FirstPhaseInProcess);
 					return;
 				}
 				else if (HookCode->SecondPhaseDone == false)
 				{
-
+					if (instruction.info.mnemonic != ZYDIS_MNEMONIC_CALL)
+					{
+						HookCode->DeadCode.push_back(instruction);
+						return;
+					}
+					SecondPhase::DeadCodeEleminator(uc, instruction, HookCode->DeadCode, HookCode->SecondPhaseInProcess);
+					return;
 				}
 				return;
 			}
