@@ -20,21 +20,21 @@ FetchContent_MakeAvailable(unicorn)
 
 # Add our project executable
 add_executable(${PROJECT_NAME}
-    "src/dynamic-retdec-decompiler/Emu.cpp"
+    "src/Emu.cpp"
     "include/Emu.hpp"
-    "src/dynamic-retdec-decompiler/Dynamic-retdec-decompiler.cpp"
-    "src/dynamic-retdec-decompiler/PeLoaderEmu/Work with PE file.cpp"
-    "src/dynamic-retdec-decompiler/PeLoaderEmu/Work with DLL.cpp"
+    "src/Dynamic-retdec-decompiler.cpp"
+    "src/PeLoaderEmu/Work with PE file.cpp"
+    "src/PeLoaderEmu/Work with DLL.cpp"
     "include/PeLoaderEmu.hpp"
-    "src/dynamic-retdec-decompiler/Hooks/HooksFromEmu.cpp"
+    "src/Hooks/HooksFromEmu.cpp"
     "include/HooksFromEmu.hpp"
-    "src/dynamic-retdec-decompiler/Hooks/FirstPhase/FirstPhase.cpp"
+    "src/Hooks/FirstPhase/FirstPhase.cpp"
     "include/Phases/FirstPhase.hpp"
-    "src/dynamic-retdec-decompiler/Hooks/SecondPhase/SecondPhase.cpp"
+    "src/Hooks/SecondPhase/SecondPhase.cpp"
     "include/Phases/SecondPhase.hpp"
     "include/z3/z3states.hpp"
     "include/z3/z3ASMx64Instructions.hpp"
-    "src/dynamic-retdec-decompiler/z3/z3ASMx64Instructions.cpp")
+    "src/z3/z3ASMx64Instructions.cpp")
 
 # Have CMake link our project executable against Zydis.
 target_link_directories(${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/CompiledDeps/z3-4.12.2-x64-win/bin")
