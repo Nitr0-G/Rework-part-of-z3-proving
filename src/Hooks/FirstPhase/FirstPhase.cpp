@@ -201,5 +201,35 @@ namespace FirstPhase {
 				return OpaquePredicateRemoverInit(uc, instruction, FirstPhaseInProcess, OpaquePredicateCode);
 			}
 		}
+
+		if (instruction.info.mnemonic == ZYDIS_MNEMONIC_CALL)
+		{
+			ZydisEncoderRequest EncInstr;
+			memset(&EncInstr, 0, sizeof(EncInstr));
+
+			for (auto& OpaquePredicateCodeIter : OpaquePredicateCode)
+			{
+				EncInstr.mnemonic = OpaquePredicateCodeIter.info.mnemonic;
+				EncInstr.machine_mode = OpaquePredicateCodeIter.info.machine_mode;
+				EncInstr.operand_count = OpaquePredicateCodeIter.info.operand_count;
+
+				for (size_t OpNum = 0; OpNum <= OpaquePredicateCodeIter.info.operand_count; OpNum++)
+				{
+					switch (OpaquePredicateCodeIter.operands[OpNum].type)
+					{
+					case ZYDIS_OPERAND_TYPE_REGISTER:
+						break;
+					case ZYDIS_OPERAND_TYPE_IMMEDIATE:
+						break;
+					case ZYDIS_OPERAND_TYPE_MEMORY:
+						brte
+					default:
+						break;
+					}
+				}
+			}
+
+			OpaquePredicateCode.clear();
+		}
 	}
 }
