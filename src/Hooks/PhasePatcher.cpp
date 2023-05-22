@@ -58,24 +58,6 @@ namespace PhasePatcher {
 			EncInstr.machine_mode = OpaquePredicateCodeIter.info.machine_mode;
 			EncInstr.operand_count = OpaquePredicateCodeIter.info.operand_count_visible;
 
-		//	RelativeInstr.insert(true);
-
-		//	EncInstr.mnemonic = ZYDIS_MNEMONIC_CALL;
-		//	EncInstr.machine_mode = ZYDIS_MACHINE_MODE_LONG_64;
-		//	EncInstr.operand_count = 1;
-			
-		//	EncInstr.operands[0].type = ZYDIS_OPERAND_TYPE_MEMORY;
-		//	EncInstr.operands[0].mem.base = ZYDIS_REGISTER_RIP;
-		//	EncInstr.operands[0].mem.index = ZYDIS_REGISTER_NONE;
-		//	EncInstr.operands[0].mem.scale = 0;
-		//	EncInstr.operands[0].mem.size = 8;
-		//	EncInstr.operands[0].mem.displacement = 0x0000000140002010;
-			// 
-			//EncInstr.operands[0].type = ZYDIS_OPERAND_TYPE_REGISTER;
-			//EncInstr.operands[0].reg.value = ZYDIS_REGISTER_RAX;
-			//EncInstr.operands[1].type = ZYDIS_OPERAND_TYPE_IMMEDIATE;
-			//EncInstr.operands[1].imm.u = 0x1;
-
 			ZyanU8 encoded_instruction[ZYDIS_MAX_INSTRUCTION_LENGTH];
 			ZyanUSize encoded_length = sizeof(encoded_instruction);
 
