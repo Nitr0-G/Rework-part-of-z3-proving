@@ -110,7 +110,7 @@ namespace SecondPhase {
         std::vector<ZydisDisassembledInstruction>& DeadCode,
         bool SecondPhaseInProcess)
     {
-        static std::unordered_set<ZydisMnemonic> JccMnemonics{
+        std::unordered_set<ZydisMnemonic> JccMnemonics{
              ZYDIS_MNEMONIC_JNBE, ZYDIS_MNEMONIC_JNB, ZYDIS_MNEMONIC_JB,
              ZYDIS_MNEMONIC_JBE, ZYDIS_MNEMONIC_JZ, ZYDIS_MNEMONIC_JNLE,
              ZYDIS_MNEMONIC_JNL, ZYDIS_MNEMONIC_JL, ZYDIS_MNEMONIC_JLE,

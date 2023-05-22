@@ -24,6 +24,7 @@ class HookCode_ {
 public:
 	bool FirstPhaseInProcess = false, FirstPhaseDone = false;
 	std::vector<ZydisDisassembledInstruction> OpaquePredicateCode;
+	std::vector<ZydisDisassembledInstruction> SourceOpaquePredicateCode;
 public:
 	bool SecondPhaseInProcess = false, SecondPhaseDone = false;
 	std::vector<ZydisDisassembledInstruction> DeadCode;
@@ -66,7 +67,7 @@ namespace Hooks
 				HookCode_* HookCode = static_cast<HookCode_*>(user_data);
 				if (HookCode->FirstPhaseDone == false)
 				{
-					FirstPhase::OpaquePredicateRemover(uc, instruction, HookCode->OpaquePredicateCode, Data, HookCode->FirstPhaseInProcess);
+					FirstPhase::OpaquePredicateRemover(uc, address, instruction, HookCode->OpaquePredicateCode, HookCode->SourceOpaquePredicateCode, Data, HookCode->FirstPhaseInProcess);
 					return;
 				}
 				else if (HookCode->SecondPhaseDone == false)

@@ -136,6 +136,7 @@ class HookCode_ {
 public:
 	bool FirstPhaseInProcess = false, FirstPhaseDone = false;
 	std::vector<ZydisDisassembledInstruction> OpaquePredicateCode;
+	std::vector<ZydisDisassembledInstruction> SourceOpaquePredicateCode;
 public:
 	bool SecondPhaseInProcess = false, SecondPhaseDone = false;
 	std::vector<ZydisDisassembledInstruction> DeadCode;
