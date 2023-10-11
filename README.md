@@ -1,4 +1,3 @@
-# DynamicRetDec
 This is the PoC - dynamic lifter and deobfuscator with collecting trace.
 
 More examples and information will be provided a little later
